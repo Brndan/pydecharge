@@ -10,6 +10,8 @@ from pathlib import Path
 import shutil
 import argparse
 
+import glob
+
 import openpyxl as xlsx
 
 
@@ -63,13 +65,24 @@ def main():
         output_file_path = Path(args.output)
     else:
         output_file_path = os.path.join(os.getcwd(), "export.xlsx")
-    print(output_file_path)
 
     if not args.begin:
         args.begin = "B25"
     if not args.end:
         args.end = "J44"
+
+    if not os.path.exists(source_folder):
+        sys.exit("La source spécifiée n’existe pas.")
     
+    # Récupère une liste de tous les xlsx dans le dossier source
+    all_xlsx = glob.glob(os.path.join(source_folder,"*.xlsx"))
+
+    #
+
+    for xlsx_file in all_xlsx:
+        
+    
+
 
 if __name__ == "__main__":
     main()
