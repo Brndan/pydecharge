@@ -73,16 +73,20 @@ def main():
 
     if not os.path.exists(source_folder):
         sys.exit("La source spécifiée n’existe pas.")
-    
+
     # Récupère une liste de tous les xlsx dans le dossier source
-    all_xlsx = glob.glob(os.path.join(source_folder,"*.xlsx"))
+    all_xlsx = glob.glob(os.path.join(source_folder, "*.xlsx"))
 
     #
 
     for xlsx_file in all_xlsx:
-        
-    
-
+        try:
+            file = xlsx.load_workbook(filename=xlsx_file)
+        except:
+            sys.exit("Erreur à l’ouverture du fichier " + xlsx_file)
+        sheet = file.active
+        cell_range = sheet[args.begin:args.end]
+        print(cell_range[0][0].value)
 
 if __name__ == "__main__":
     main()
