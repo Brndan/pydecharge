@@ -86,7 +86,18 @@ def main():
             sys.exit("Erreur à l’ouverture du fichier " + xlsx_file)
         sheet = file.active
         cell_range = sheet[args.begin:args.end]
-        print(cell_range[0][0].value)
+        for row in range(len(cell_range)):
+            export_row = []
+            row_length = len(cell_range[row])
+            empty_cells = 0
+            for cell_coordinate in range(row_length):
+                cell = cell_range[row][cell_coordinate].value
+                if not cell:
+                    cell = 0
+                    empty_cells += 1
+                export_row.append(cell)
+            if not empty_cells == row_length:
+                print(export_row)
 
 if __name__ == "__main__":
     main()
