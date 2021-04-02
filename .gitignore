@@ -1,6 +1,8 @@
 export/
 *.build
 *.bin
+*.xlsx
+*.~lock*
 
 # ---> Python
 # Byte-compiled / optimized / DLL files
