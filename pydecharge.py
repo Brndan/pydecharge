@@ -12,13 +12,13 @@ import argparse
 
 import glob
 
-import openpyxl as xlsx
+from openpyxl import Workbook, load_workbook
 
 # def check_row(row):
 
 
 def save_export_syndicats(export_sheet, output_file_path):
-    wb = xlsx.Workbook()
+    wb = Workbook()
     ws = wb.active
     header = ["Code organisation", "M. Mme", "Prénom", "Nom", "Heures décharges",
               "Minutes décharges", "Heures ORS", "Minutes ORS", "AIRE", "Corps", "RNE"]
@@ -101,7 +101,7 @@ def main():
 
     for xlsx_file in all_xlsx:
         try:
-            file = xlsx.load_workbook(filename=xlsx_file)
+            file = load_workbook(filename=xlsx_file)
         except:
             sys.exit("Erreur à l’ouverture du fichier " + xlsx_file)
         sheet = file.active
