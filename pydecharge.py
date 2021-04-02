@@ -13,19 +13,26 @@ import argparse
 import glob
 
 import openpyxl as xlsx
+from collections import OrderedDict
 
-#def check_row(row):
+# def check_row(row):
 
-def save_export(export_sheet,output_file_path):
+
+def save_export_syndicats(export_sheet, output_file_path):
     wb = xlsx.Workbook()
     ws = wb.active
+    header = ["Code organisation", "M. Mme", "Prénom", "Nom", "Heures décharges",
+              "Minutes décharges", "Heures ORS", "Minutes ORS", "AIRE", "Corps", "RNE"]
+    for i in range(len(header)):
+        ws.cell(1,i+1).value = header[i]
     # On remplit le fichier ici avec le contenu de export_sheet
     for row in range(len(export_sheet)):
+        export_sheet[row].insert(0, "S01")  # Code organisation → toujours S01
+        export_sheet[row].insert(7, 0)  # Minutes ORS → toujours 0
+        export_sheet[row].insert(-2, 2)  # Aire, toujours 2
         for cell in range(len(export_sheet[row])):
-            ws.cell(row+1,cell+1).value = export_sheet[row][cell]
+            ws.cell(row+2, cell+1).value = export_sheet[row][cell]
     wb.save(output_file_path)
-
-
 
 
 def main():
@@ -111,7 +118,8 @@ def main():
                 export_row.append(cell)
             if not empty_cells == row_length:
                 export_sheet.append(export_row)
-    save_export(export_sheet,output_file_path)    
+    save_export_syndicats(export_sheet, output_file_path)
+
 
 if __name__ == "__main__":
     main()
