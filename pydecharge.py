@@ -32,6 +32,7 @@ def save_export_syndicats(export_sheet, output_file_path):
         export_sheet[row].insert(-2, 2)  # Aire, toujours 2
         for cell in range(len(export_sheet[row])):
             ws.cell(row+2, cell+1).value = export_sheet[row][cell]
+            ws.cell(row+2, cell+1).number_format = '@' # Appliquer le format 'Texte' évite une single quote avant les nombres
     wb.save(output_file_path)
 
 
