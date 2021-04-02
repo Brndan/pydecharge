@@ -13,7 +13,6 @@ import argparse
 import glob
 
 import openpyxl as xlsx
-from collections import OrderedDict
 
 # def check_row(row):
 
