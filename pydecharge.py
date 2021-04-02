@@ -14,6 +14,19 @@ import glob
 
 import openpyxl as xlsx
 
+#def check_row(row):
+
+def save_export(export_sheet,output_file_path):
+    wb = xlsx.Workbook()
+    ws = wb.active
+    # On remplit le fichier ici avec le contenu de export_sheet
+    for row in range(len(export_sheet)):
+        for cell in range(len(export_sheet[row])):
+            ws.cell(row+1,cell+1).value = export_sheet[row][cell]
+    wb.save(output_file_path)
+
+
+
 
 def main():
     parser = argparse.ArgumentParser(
@@ -77,7 +90,7 @@ def main():
     # Récupère une liste de tous les xlsx dans le dossier source
     all_xlsx = glob.glob(os.path.join(source_folder, "*.xlsx"))
 
-    #
+    export_sheet = []
 
     for xlsx_file in all_xlsx:
         try:
@@ -97,7 +110,8 @@ def main():
                     empty_cells += 1
                 export_row.append(cell)
             if not empty_cells == row_length:
-                print(export_row)
+                export_sheet.append(export_row)
+    save_export(export_sheet,output_file_path)    
 
 if __name__ == "__main__":
     main()
