@@ -14,7 +14,8 @@ Excel contenant les déclarations de décharge des syndicats.
 
 	--cts	crée un fichier Excel en sortie contenant les synthèses des syndicats :
 	Syndicat | ETP attribué au syndicat | Mutualisation | "ETP disponibles | Consommé | Crédit d'Heures (CHS)
-			Si --cts n'est pas renseigné, le défaut est une compilation des	mandats des décharges locales ou fédérales.
+			Si --cts n'est pas renseigné, le défaut est une compilation des
+			mandats des décharges.
 		
 	--begin	début de la plage de données. Par défaut, la valeur A25 est
 	-b		attribuée à ce paramètre.
@@ -27,7 +28,7 @@ Excel contenant les déclarations de décharge des syndicats.
 		
 	-ooutput fichier en sortie. Par défaut, le fichier "export.xlsx" est
 	-o		généré dans le répertoire courant.
-	
+
 
 
 
