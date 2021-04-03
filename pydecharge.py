@@ -151,10 +151,10 @@ def main():
             for row in range(len(cell_range)):
                 export_row = []
                 row_length = len(cell_range[row])
-                empty_cells = 0
                 for cell_coordinate in range(row_length):
                     cell = cell_range[row][cell_coordinate].value
                     export_row.append(cell)
+                print(export_row)
                 export_sheet.append(export_row)
         save_export_cts(export_sheet, output_file_path)
     else:
