@@ -150,7 +150,6 @@ def main():
                 for cell_coordinate in range(row_length):
                     cell = cell_range[row][cell_coordinate].value
                     export_row.append(cell)
-                print(export_row)
                 export_sheet.append(export_row)
         save_export_cts(export_sheet, output_file_path)
     else:
