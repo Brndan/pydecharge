@@ -25,7 +25,7 @@ Excel contenant les déclarations de décharge des syndicats.
 	-input	dossier dans lequel se trouvent les fichiers à compiler. Si ce
 	-i		paramètre est omis, le répertoire courant est utilisé.
 		
-	-ooutput fichier en sortie. Par défaut, le fichier "export.xlsx" est
+	-output fichier en sortie. Par défaut, le fichier "export.xlsx" est
 	-o		généré dans le répertoire courant.
 
 
