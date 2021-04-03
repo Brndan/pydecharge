@@ -57,3 +57,9 @@ La seule dépendance requise est le module `openpyxl`.
 Pour installer les dépendances :
 
 `pip install -r requirements.txt`
+
+
+
+Pour créer le paquet :
+
+`python -m build` à la racine du paquet, puis `python -m pip install dist/pydecharge*.whl`.
