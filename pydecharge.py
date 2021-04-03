@@ -145,7 +145,6 @@ def main():
                     empty_cells += 1
                 export_row.append(cell)
             if not empty_cells == row_length:
-                # TODO: vérifier l’input
                 check_row(export_row, xlsx_file, row)
                 export_sheet.append(export_row)
     save_export_syndicats(export_sheet, output_file_path)
