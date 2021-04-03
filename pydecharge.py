@@ -29,19 +29,17 @@ def check_row(row, file, line):
         print("Fichier {} : erreur dans le champ Nom de la ligne {} traitée.".format(
             file, line), file=sys.stderr)
     if not re.fullmatch(r'\d{2,3}', champs['corps']):
-         print("Fichier {} : erreur dans le champ Corps de la ligne {} traitée.".format(
+        print("Fichier {} : erreur dans le champ Corps de la ligne {} traitée.".format(
             file, line), file=sys.stderr)
     if not re.fullmatch(r'\d{7}[A-Z]', champs['rne']):
-         print("Fichier {} : erreur dans le champ RNE de la ligne {} traitée.".format(
+        print("Fichier {} : erreur dans le champ RNE de la ligne {} traitée.".format(
             file, line), file=sys.stderr)
     if champs['minutes_decharges'] < 0 or champs['minutes_decharges'] >= 60:
-         print("Fichier {} : erreur dans le champ Minutes de décharge de la ligne {} traitée.".format(
+        print("Fichier {} : erreur dans le champ Minutes de décharge de la ligne {} traitée.".format(
             file, line), file=sys.stderr)
-    if not champs['heures_ORS'] in (15,18,27,35,36,1607) :
-         print("Fichier {} : erreur dans le champ Heures ORS de la ligne {} traitée.".format(
+    if not champs['heures_ORS'] in (15, 18, 27, 35, 36, 1607):
+        print("Fichier {} : erreur dans le champ Heures ORS de la ligne {} traitée.".format(
             file, line), file=sys.stderr)
-    
-    
 
 
 def save_export_syndicats(export_sheet, output_file_path):
@@ -62,6 +60,21 @@ def save_export_syndicats(export_sheet, output_file_path):
             ws.cell(row+2, cell+1).number_format = '@'
     wb.save(output_file_path)
 
+def save_export_cts(export_sheet, output_file_path):
+    wb = Workbook()
+    ws = wb.active
+    header = ["Syndicat", "ETP attribués", "Mutualisation", "ETP disponibles", "Décharges",
+              "CTS"]
+    for i in range(len(header)):
+        ws.cell(1, i+1).value = header[i]
+    # On remplit le fichier ici avec le contenu de export_sheet
+    for row in range(len(export_sheet)):
+        for cell in range(len(export_sheet[row])):
+            ws.cell(row+2, cell+1).value = export_sheet[row][cell]
+            # Appliquer le format 'Texte' évite une single quote avant les nombres
+            #ws.cell(row+2, cell+1).number_format = '@'
+    wb.save(output_file_path)
+
 
 def main():
     parser = argparse.ArgumentParser(
@@ -69,20 +82,21 @@ def main():
     parser.add_argument(
         "--cts",
         help="Synthèse de la ligne des CTS des syndicats",
+        action="store_true",
         required=False)
     parser.add_argument(
         "--begin",
         "-b",
         action="store",
         help="Début de la plage de données",
-        required=False
+        required=True
     )
     parser.add_argument(
         "--end",
         "-e",
         action="store",
         help="Fin de la plage de données",
-        required=False
+        required=True
     )
     parser.add_argument(
         "-i",
@@ -98,10 +112,10 @@ def main():
         help="fichier en sortie. Par défaut, le fichier export.xlsx est généré dans le répertoire courant.",
         required=False
     )
-    parser.add_argument(
+    """ parser.add_argument(
         "--csv",
         help="Synthèse de la ligne des CTS des syndicats",
-        required=False)
+        required=False) """
     args = parser.parse_args()
 
     if args.input:
@@ -126,28 +140,45 @@ def main():
     all_xlsx = glob.glob(os.path.join(source_folder, "*.xlsx"))
 
     export_sheet = []
-
-    for xlsx_file in all_xlsx:
-        try:
-            file = load_workbook(filename=xlsx_file)
-        except:
-            sys.exit("Erreur à l’ouverture du fichier " + xlsx_file)
-        sheet = file.active
-        cell_range = sheet[args.begin:args.end]
-        for row in range(len(cell_range)):
-            export_row = []
-            row_length = len(cell_range[row])
-            empty_cells = 0
-            for cell_coordinate in range(row_length):
-                cell = cell_range[row][cell_coordinate].value
-                if not cell:
-                    cell = 0
-                    empty_cells += 1
-                export_row.append(cell)
-            if not empty_cells == row_length:
-                check_row(export_row, xlsx_file, row)
+    if args.cts:
+        for xlsx_file in all_xlsx:
+            try:
+                file = load_workbook(filename=xlsx_file,data_only=True) # Récupérer les valeurs calculées
+            except:
+                sys.exit("Erreur à l’ouverture du fichier " + xlsx_file)
+            sheet = file.active
+            cell_range = sheet[args.begin:args.end]
+            for row in range(len(cell_range)):
+                export_row = []
+                row_length = len(cell_range[row])
+                empty_cells = 0
+                for cell_coordinate in range(row_length):
+                    cell = cell_range[row][cell_coordinate].value
+                    export_row.append(cell)
                 export_sheet.append(export_row)
-    save_export_syndicats(export_sheet, output_file_path)
+        save_export_cts(export_sheet, output_file_path)
+    else:
+        for xlsx_file in all_xlsx:
+            try:
+                file = load_workbook(filename=xlsx_file)
+            except:
+                sys.exit("Erreur à l’ouverture du fichier " + xlsx_file)
+            sheet = file.active
+            cell_range = sheet[args.begin:args.end]
+            for row in range(len(cell_range)):
+                export_row = []
+                row_length = len(cell_range[row])
+                empty_cells = 0
+                for cell_coordinate in range(row_length):
+                    cell = cell_range[row][cell_coordinate].value
+                    if not cell:
+                        cell = 0
+                        empty_cells += 1
+                    export_row.append(cell)
+                if not empty_cells == row_length:
+                    check_row(export_row, xlsx_file, row)
+                    export_sheet.append(export_row)
+        save_export_syndicats(export_sheet, output_file_path)
 
 
 if __name__ == "__main__":
