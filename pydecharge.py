@@ -112,10 +112,6 @@ def main():
         help="fichier en sortie. Par défaut, le fichier export.xlsx est généré dans le répertoire courant.",
         required=False
     )
-    """ parser.add_argument(
-        "--csv",
-        help="Synthèse de la ligne des CTS des syndicats",
-        required=False) """
     args = parser.parse_args()
 
     if args.input:
