@@ -1,4 +1,4 @@
-# syndecharge
+# pydecharge
 
 Compile les décharges individuelles des tableaux des syndicats.
 
@@ -6,9 +6,9 @@ Compile les décharges individuelles des tableaux des syndicats.
 
 ## Utilisation
 
-Usage : `syndecharge [--cts] [--begin A25] [--end J44] [-i dossier] [-o fichier]`
+Usage : `pydecharge [--cts] [--begin A25] [--end J44] [-i dossier] [-o fichier]`
 		
-*syndecharge* est un programme qui compile les données de plages de fichiers
+*pydecharge* est un programme qui compile les données de plages de fichiers
 Excel contenant les déclarations de décharge des syndicats.
 	
 
