@@ -62,4 +62,4 @@ Pour installer les dépendances :
 
 Pour créer le paquet :
 
-`python -m build` à la racine du paquet, puis `python -m pip install dist/pydecharge*.whl`.
+`python -m build` à la racine du paquet (installer `build` si nécessaire, puis `python -m pip install dist/pydecharge*.whl`.
