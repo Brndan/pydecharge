@@ -19,6 +19,9 @@ def check_row(row, file, line):
     line += 1
     champs = dict(zip(["civilite", "prenom", "nom", "heures_decharge",
                        "minutes_decharges", "heures_ORS", "corps", "rne"], row))
+    for key in champs:
+        if not key in ("minutes_decharges", "heures_ORS"):
+            champs[key] = str(champs[key])
     if not champs['civilite'] in ('M.', 'Mme'):
         print("Fichier {} : erreur dans le champ Civilité de la ligne {} traitée.".format(
             file, line), file=sys.stderr)
@@ -28,16 +31,16 @@ def check_row(row, file, line):
     if not re.fullmatch(r"""[A-ZÀ-ÖØ-ÞŽŸ' -]+[A-ZÀ-ÖØ-ÞŽŸ]""", champs['nom']):
         print("Fichier {} : erreur dans le champ Nom de la ligne {} traitée.".format(
             file, line), file=sys.stderr)
-    if not re.fullmatch(r'\d{2,3}', champs['corps']):
+    if not re.fullmatch(r'\w{2,3}', champs['corps']):
         print("Fichier {} : erreur dans le champ Corps de la ligne {} traitée.".format(
             file, line), file=sys.stderr)
     if not re.fullmatch(r'\d{7}[A-Z]', champs['rne']):
-        print("Fichier {} : erreur dans le champ RNE de la ligne {} traitée.".format(
-            file, line), file=sys.stderr)
+        print("Fichier {} : erreur dans le champ RNE de la ligne {} traitée : {}".format(
+            file, line, champs['rne']), file=sys.stderr)
     if champs['minutes_decharges'] < 0 or champs['minutes_decharges'] >= 60:
         print("Fichier {} : erreur dans le champ Minutes de décharge de la ligne {} traitée.".format(
             file, line), file=sys.stderr)
-    if not champs['heures_ORS'] in (15, 18, 27, 35, 36, 1607):
+    if not champs['heures_ORS'] in (15, 17, 18, 20, 27, 35, 36, 192, 384, 1607):
         print("Fichier {} : erreur dans le champ Heures ORS de la ligne {} traitée.".format(
             file, line), file=sys.stderr)
 
@@ -155,7 +158,7 @@ def main():
     else:
         for xlsx_file in all_xlsx:
             try:
-                file = load_workbook(filename=xlsx_file)
+                file = load_workbook(filename=xlsx_file,data_only=True)
             except:
                 sys.exit("Erreur à l’ouverture du fichier " + xlsx_file)
             sheet = file.active
