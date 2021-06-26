@@ -48,14 +48,14 @@ def check_row(row, file, line):
 def save_export_syndicats(export_sheet, output_file_path):
     wb = Workbook()
     ws = wb.active
-    header = ["Code organisation", "M. Mme", "Prénom", "Nom", "Heures décharges",
-              "Minutes décharges", "Heures ORS", "Minutes ORS", "AIRE", "Corps", "RNE"]
+    header = ["Code organisation", "Code civilité", "Prénom", "Nom", "Heures décharges",
+              "Minutes décharges", "Heures ORS", "AIRE", "Corps", "Établissement","Date d’effet", "Date de fin"]
     for i in range(len(header)):
         ws.cell(1, i+1).value = header[i]
     # On remplit le fichier ici avec le contenu de export_sheet
     for row in range(len(export_sheet)):
         export_sheet[row].insert(0, "S01")  # Code organisation → toujours S01
-        export_sheet[row].insert(7, 0)  # Minutes ORS → toujours 0
+        #export_sheet[row].insert(7, 0)  # Minutes ORS → toujours 0
         export_sheet[row].insert(-2, 2)  # Aire, toujours 2
         for cell in range(len(export_sheet[row])):
             ws.cell(row+2, cell+1).value = export_sheet[row][cell]
